@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%X{traceId},%X{spanId}] --- [%15.15t] %C(%M): %m%n%ex</Property>
+        <Property name="LOG_FILE_PATH">log</Property>
+        <Property name="FILE_NAME">crypto-trading-logs</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <!-- File Appender with Rolling Policy -->
+        <RollingFile name="FileAppender" fileName="${LOG_FILE_PATH}/${FILE_NAME}.log"
+                     filePattern="${LOG_FILE_PATH}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <!-- File Appender JsonLayout with Rolling Policy -->
+        <RollingFile name="FileJsonAppender" fileName="${LOG_FILE_PATH}/${FILE_NAME}-json.log"
+                     filePattern="${LOG_FILE_PATH}/${FILE_NAME}-json-%d{yyyy-MM-dd}-%i.log.gz">
+            <JsonLayout compact="true" eventEol="true" includeTimeMillis="true" stacktraceAsString="true">
+                <KeyValuePair key="traceId" value="$${ctx:traceId:-}"/>
+                <KeyValuePair key="spanId" value="$${ctx:spanId:-}"/>
+            </JsonLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Root Logger -->
+        <Root level="info">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="FileJsonAppender"/>
+        </Root>
+
+        <!-- Specific Logger for your application package -->
+        <Logger name="com.me.crypto.trading" level="trace" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="FileJsonAppender"/>
+        </Logger>
+    </Loggers>
+</Configuration>
