@@ -8,8 +8,9 @@ CREATE TABLE crypto_transaction (
     price DECIMAL(19,8) NOT NULL,
     quantity DECIMAL(19,8) NOT NULL,
     total_amount DECIMAL(19,8) NOT NULL,
-    created_at DATETIME NOT NULL,
+    created_at TIMESTAMP NOT NULL,
 
-    UNIQUE INDEX uidx_crypto_transaction_txn_code (`txn_code`),
-    INDEX idx_crypto_transaction_user_id_symbol_side (`user_id`, `symbol`, `side`)
+    CONSTRAINT uidx_crypto_transaction_txn_code UNIQUE (`txn_code`)
 );
+
+CREATE INDEX idx_crypto_transaction_user_id_symbol_side ON crypto_transaction (`user_id`, `symbol`, `side`);
