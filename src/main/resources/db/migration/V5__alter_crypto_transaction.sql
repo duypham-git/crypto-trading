@@ -1,1 +1,1 @@
-ALTER TABLE crypto_transaction ADD INDEX idx_crypto_transaction_created_at (created_at);
+CREATE INDEX idx_crypto_transaction_created_at ON crypto_transaction (`created_at`);
