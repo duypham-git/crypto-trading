@@ -1,7 +1,7 @@
 package com.me.crypto.trading.service.impl;
 
 import com.me.crypto.trading.common.dto.BinanceBookTickerDto;
-import com.me.crypto.trading.common.dto.HuobiTickersResponse;
+import com.me.crypto.trading.common.dto.HuobiTickersResponseDto;
 import com.me.crypto.trading.service.BaseService;
 import com.me.crypto.trading.service.BinanceTickerHttpService;
 import com.me.crypto.trading.service.CryptoTickerHttpService;
@@ -27,7 +27,7 @@ public class CryptoTickerHttpServiceImpl extends BaseService implements CryptoTi
     }
 
     @Override
-    public HuobiTickersResponse getHoubiTicker() {
+    public HuobiTickersResponseDto getHoubiTicker() {
         return execute(houbiTickerHttpService.getHoubiTicker(), "get houbi-ticker");
     }
 

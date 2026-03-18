@@ -2,7 +2,8 @@ package com.me.crypto.trading.service.impl;
 
 import com.me.crypto.trading.common.dto.BinanceBookTickerDto;
 import com.me.crypto.trading.common.dto.HuobiTickerDto;
-import com.me.crypto.trading.common.dto.HuobiTickersResponse;
+import com.me.crypto.trading.common.dto.HuobiTickersResponseDto;
+import com.me.crypto.trading.common.dto.PriceResponseDto;
 import com.me.crypto.trading.common.entity.PriceAggregationEntity;
 import com.me.crypto.trading.common.helper.Symbol;
 import com.me.crypto.trading.repository.PriceAggregationRepository;
@@ -38,7 +39,7 @@ public class PriceAggregationServiceImpl extends BaseService implements PriceAgg
             // get binance ticker
             List<BinanceBookTickerDto> binanceBookTickerDtoList = cryptoTickerHttpService.getBinanceTicker();
             // get huobi ticker
-            HuobiTickersResponse huobiTickersResponse = cryptoTickerHttpService.getHoubiTicker();
+            HuobiTickersResponseDto huobiTickersResponse = cryptoTickerHttpService.getHoubiTicker();
             // map BTCUSDT and ETHUSDT from both responses
             Map<Symbol, BinanceBookTickerDto> binanceBookTickerDtoMap = binanceBookTickerDtoList.stream()
                     .filter(binanceBookTickerDto ->
@@ -80,6 +81,31 @@ public class PriceAggregationServiceImpl extends BaseService implements PriceAgg
             log.trace("Successfully run price-aggregation");
         } catch (Exception e) {
             log.error("Fail to run price-aggregation. errorMessage={}", e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<PriceResponseDto> getCryptoLatestPrice() {
+        log.trace("Get crypto latest price.");
+        try {
+            List<PriceAggregationEntity> priceAggregationEntityList = priceAggregationRepository.findAll();
+
+            List<PriceResponseDto> priceResponseDtoList = priceAggregationEntityList
+                    .stream()
+                    .map(priceAggregationEntity -> {
+                        PriceResponseDto priceResponseDto = new PriceResponseDto();
+                        priceResponseDto.setSymbol(priceAggregationEntity.getSymbol());
+                        priceResponseDto.setBestAskPrice(priceAggregationEntity.getBestAskPrice());
+                        priceResponseDto.setBestBidPrice(priceAggregationEntity.getBestBidPrice());
+                        priceResponseDto.setUpdatedAt(priceAggregationEntity.getUpdatedAt());
+                        return priceResponseDto;
+                    })
+                    .toList();
+            log.trace("Successfully get crypto latest price. price={}", priceResponseDtoList);
+            return priceResponseDtoList;
+        } catch (Exception e) {
+            log.trace("Fail to get crypto latest price. errorMessage={}", e.getMessage(), e);
+            throw e;
         }
     }
 }
