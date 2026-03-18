@@ -1,7 +1,7 @@
 package com.me.crypto.trading.service;
 
-import com.me.crypto.trading.common.dto.CryptoWalletBalance;
+import com.me.crypto.trading.common.dto.CryptoWalletBalanceDto;
 
 public interface CryptoWalletService {
-    CryptoWalletBalance getCryptoWalletBalance(Long userId);
+    CryptoWalletBalanceDto getCryptoWalletBalance(Long userId);
 }

@@ -1,7 +1,7 @@
 package com.me.crypto.trading.service.impl;
 
-import com.me.crypto.trading.common.dto.ComponentBalance;
-import com.me.crypto.trading.common.dto.CryptoWalletBalance;
+import com.me.crypto.trading.common.dto.ComponentBalanceDto;
+import com.me.crypto.trading.common.dto.CryptoWalletBalanceDto;
 import com.me.crypto.trading.common.entity.CryptoWalletEntity;
 import com.me.crypto.trading.repository.CryptoWalletRepository;
 import com.me.crypto.trading.service.BaseService;
@@ -18,21 +18,21 @@ public class CryptoWalletServiceImpl extends BaseService implements CryptoWallet
     @Autowired private CryptoWalletRepository cryptoWalletRepository;
 
     @Override
-    public CryptoWalletBalance getCryptoWalletBalance(Long userId){
+    public CryptoWalletBalanceDto getCryptoWalletBalance(Long userId){
         log.trace("Get crypto wallet balance. userId={}", userId);
         try {
             List<CryptoWalletEntity> cryptoWalletEntityList = cryptoWalletRepository.findByUserId(userId);
-            List<ComponentBalance> componentBalanceList = cryptoWalletEntityList
+            List<ComponentBalanceDto> componentBalanceList = cryptoWalletEntityList
                     .stream()
                     .map(cryptoWalletEntity -> {
-                        ComponentBalance componentBalance = new ComponentBalance();
+                        ComponentBalanceDto componentBalance = new ComponentBalanceDto();
                         componentBalance.setBalanceType(cryptoWalletEntity.getBalanceType());
                         componentBalance.setBalance(cryptoWalletEntity.getBalance());
                         return componentBalance;
                     })
                     .toList();
 
-            CryptoWalletBalance cryptoWalletBalance = new CryptoWalletBalance();
+            CryptoWalletBalanceDto cryptoWalletBalance = new CryptoWalletBalanceDto();
             cryptoWalletBalance.setBalanceList(componentBalanceList);
             log.trace("Successfully get crypto wallet balance. userId={} balance={}", userId, cryptoWalletBalance);
             return cryptoWalletBalance;
