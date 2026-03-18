@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CryptoWalletBalance {
-    private List<ComponentBalance> balanceList;
+public class HuobiTickersResponseDto {
+    private List<HuobiTickerDto> data;
 }

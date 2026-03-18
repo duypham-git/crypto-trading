@@ -6,7 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class ComponentBalance {
+public class ComponentBalanceDto {
     private BalanceType balanceType;
     private BigDecimal balance;
 }
