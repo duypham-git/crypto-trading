@@ -32,6 +32,13 @@ public class CryptoController extends BaseController {
     public ResponseBodyDto transferCrypto(@RequestHeader(defaultValue = "999") Long userId,
                                           @RequestBody TransferRequestDto transferRequestDto){
         transferRequestDto.setUserId(userId);
+        //TODO if the requirement is to run on mutiple-instance environment, we can add the retry logic here
         return mapResponse(() -> cryptoWalletService.transferCrypto(transferRequestDto));
+    }
+
+    @GetMapping("/v1/crypto/transactions")
+    @ResponseBody
+    public ResponseBodyDto getCryptoTransactions(@RequestHeader(defaultValue = "999") Long userId){
+        return mapResponse(() -> cryptoWalletService.getCryptoTransactions(userId));
     }
 }

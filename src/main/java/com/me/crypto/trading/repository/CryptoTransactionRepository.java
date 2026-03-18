@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CryptoTransactionRepository extends JpaRepository<CryptoTransactionEntity, Long> {
     List<CryptoTransactionEntity> findByUserId(Long userId);
+    List<CryptoTransactionEntity> findByUserIdOrderByCreatedAtDesc(Long userId);
 }
