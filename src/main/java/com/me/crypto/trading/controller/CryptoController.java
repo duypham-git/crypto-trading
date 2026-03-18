@@ -15,6 +15,9 @@ public class CryptoController extends BaseController {
     @GetMapping("/v1/crypto/wallet/balance")
     @ResponseBody
     public ResponseBodyDto getCryptoWalletBalance(@RequestHeader(defaultValue = "999") Long userId){
+        //TODO normally, userId will be extracted after the token verification
+        //  - but since the requirement is assuming user authenticated/authorized, then I will get userId from requestHeader
+        //  - default requestHeader userId is 999 so that you don't need to pass it from API
         return mapResponse(() -> cryptoWalletService.getCryptoWalletBalance(userId));
     }
 }
