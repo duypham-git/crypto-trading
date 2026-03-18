@@ -4,7 +4,7 @@ CREATE TABLE price_aggregation (
     symbol VARCHAR(10) NOT NULL,
     best_bid_price DECIMAL(19,8) NOT NULL,
     best_ask_price DECIMAL(19,8) NOT NULL,
-    updated_at DATETIME NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
 
-    UNIQUE INDEX uidx_price_aggregation_symbol (`symbol`)
+    CONSTRAINT uidx_price_aggregation_symbol UNIQUE (`symbol`)
 );
