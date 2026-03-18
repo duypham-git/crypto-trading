@@ -134,6 +134,7 @@ public class CryptoWalletServiceImpl extends BaseService implements CryptoWallet
     public List<CryptoTransactionDto> getCryptoTransactions(Long userId){
         log.trace("Get crypto transactions. userId={}", userId);
         try {
+            //TODO we can apply pagination here in case the list is too long
             List<CryptoTransactionEntity> cryptoTransactionEntityList = cryptoTransactionRepository.findByUserIdOrderByCreatedAtDesc(userId);
             List<CryptoTransactionDto> cryptoTransactionDtoList = mapFrom(cryptoTransactionEntityList);
             log.trace("Successfully get crypto transactions. userId={} txnSize={}", userId, cryptoTransactionDtoList.size());
